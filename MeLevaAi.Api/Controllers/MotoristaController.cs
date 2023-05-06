@@ -20,7 +20,6 @@ namespace MeLevaAi.Api.Controllers
             _motoristaService = new();
         }
 
-
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MotoristaResponseList))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
@@ -33,7 +32,6 @@ namespace MeLevaAi.Api.Controllers
 
             return Ok(response);
         }
-
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MotoristaResponse))]

@@ -35,5 +35,4 @@ namespace MeLevaAi.Api.Repositories
             return _veiculos.Remove(veiculo);
         }
     }
-
 }

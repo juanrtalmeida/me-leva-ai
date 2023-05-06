@@ -12,4 +12,5 @@ namespace MeLevaAi.Api.Contracts.Responses.Veiculo
     {
         public List<VeiculoDto>? Veiculos { get; set; }
     }
+
 }

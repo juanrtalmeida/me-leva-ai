@@ -18,6 +18,5 @@ namespace MeLevaAi.Api.Contracts.Requests.Motorista
         public string Cpf { get; set; }
         
         public CarteiraHabilitacaoResquest CarteiraHabilitacao { get; set; }
-
     }
 }

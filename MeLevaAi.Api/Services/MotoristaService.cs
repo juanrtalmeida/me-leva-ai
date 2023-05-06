@@ -55,6 +55,7 @@ namespace MeLevaAi.Api.Services
 
             DateTime dataAtual = DateTime.Now;
             int idade = dataAtual.Year - request.DataNascimento.Year;
+            var cpf = request.Cpf.Replace(".", "").Replace("-", "");
 
             if (dataAtual.Month < request.DataNascimento.Month || (dataAtual.Month == request.DataNascimento.Month && dataAtual.Day < request.DataNascimento.Day))
             {
@@ -79,7 +80,7 @@ namespace MeLevaAi.Api.Services
                 return response;
             }
 
-            if (request.Cpf.Length < 11)
+            if (cpf.Length != 11)
             {
                 response.AddNotification(new Validations.Notification("CPF invalido."));
                 return response;
@@ -96,7 +97,6 @@ namespace MeLevaAi.Api.Services
             var motoristaMapped = request.ToMotorista();
 
             var motoristaCriado = _motoristaRepository.Cadastrar(motoristaMapped);
-
 
             response.Motorista = motoristaCriado.ToMotoristaDto();
 
@@ -136,7 +136,6 @@ namespace MeLevaAi.Api.Services
                 return response;
             }
 
-
             var veiculo = _veiculoRepository.ObterPorProprietarioId(motorista.Id);
 
             if (veiculo != null)
@@ -146,7 +145,6 @@ namespace MeLevaAi.Api.Services
             }
  
             _motoristaRepository.Deletar(id); 
-
 
             return response;
         }

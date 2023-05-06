@@ -26,6 +26,7 @@ namespace MeLevaAi.Api.Mappers
                 Ano = veiculo.Ano,
                 Cor = veiculo.Cor,
                 QuantidadeLugares = veiculo.QuantidadeLugares,
+                ProprietarioId = veiculo.ProprietarioId,
                 Categoria = veiculo.Categoria
             };
         }
