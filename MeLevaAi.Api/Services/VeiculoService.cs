@@ -17,6 +17,23 @@ namespace MeLevaAi.Api.Services
             _motoristaRepository = new();
         }
 
+        public VeiculoResponseList Listar()
+        {
+            var response = new VeiculoResponseList();
+            var veiculos = _veiculoRepository.Listar();
+
+            if (!veiculos.Any())
+            {
+                response.AddNotification(new Validations.Notification("Nenhum veiculo encontrado"));
+                return response;
+            }
+
+            var veiculosMapped = veiculos.Select(v => v.ToVeiculoDto()).ToList();
+            response.Veiculos = veiculosMapped;
+
+            return response;
+        }
+
         public VeiculoResponse Obter(Guid id)
         {
             var response = new VeiculoResponse();
@@ -59,6 +76,27 @@ namespace MeLevaAi.Api.Services
 
 
             response.Veiculo = veiculoCriado.ToVeiculoDto();
+
+            return response;
+        }
+
+        public VeiculoResponse Alterar(Guid id, VeiculoRequest request)
+        {
+            var response = new VeiculoResponse();
+
+            var veiculoAtual = _veiculoRepository.Obter(id);
+
+            if (veiculoAtual is null)
+            {
+                response.AddNotification(new Validations.Notification("Veículo não foi encontrado."));
+                return response;
+            }
+
+            var veiculoNovo = request.ToVeiculo();
+
+            veiculoNovo.Alterar(veiculoNovo);
+
+            response.Veiculo = veiculoNovo.ToVeiculoDto();
 
             return response;
         }

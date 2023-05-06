@@ -15,6 +15,8 @@ namespace MeLevaAi.Api.Repositories
         public Veiculo? Obter(Guid id)
             => (from a in _veiculos where a.Id == id select a).FirstOrDefault();
 
+        public Veiculo? ObterPorProprietarioId(Guid id)
+            => (from a in _veiculos where a.ProprietarioId == id select a).FirstOrDefault();
 
         public Veiculo Cadastrar(Veiculo veiculo)
         {

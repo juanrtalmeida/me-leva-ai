@@ -20,6 +20,19 @@ namespace MeLevaAi.Api.Controllers
             _veiculoService = new();
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VeiculoResponseList))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+        public ActionResult<IEnumerable<Veiculo>?> Listar()
+        {
+            var response = _veiculoService.Listar();
+
+            if (!response.IsValid())
+                return NotFound(new ErrorResponse(response.Notifications));
+
+            return Ok(response);
+        }
+
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VeiculoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
@@ -39,6 +52,19 @@ namespace MeLevaAi.Api.Controllers
         public ActionResult<Veiculo?> Cadastrar([FromBody] VeiculoRequest request)
         {
             var response = _veiculoService.Cadastrar(request);
+
+            if (!response.IsValid())
+                return NotFound(new ErrorResponse(response.Notifications));
+
+            return Ok(response);
+        }
+
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VeiculoResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+        public IActionResult Alterar([FromRoute] Guid id, [FromBody] VeiculoRequest request)
+        {
+            var response = _veiculoService.Alterar(id, request);
 
             if (!response.IsValid())
                 return NotFound(new ErrorResponse(response.Notifications));

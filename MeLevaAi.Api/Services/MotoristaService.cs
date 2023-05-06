@@ -1,4 +1,6 @@
 ﻿using MeLevaAi.Api.Contracts.Requests.Motorista;
+using MeLevaAi.Api.Contracts.Requests.Veiculo;
+using MeLevaAi.Api.Contracts.Responses.Veiculo;
 using MeLevaAi.Api.Mappers;
 using MeLevaAi.Api.Repositories;
 
@@ -7,16 +9,34 @@ namespace MeLevaAi.Api.Services
     public class MotoristaService
     {
         public readonly MotoristaRepository _motoristaRepository;
+        public readonly VeiculoRepository _veiculoRepository;
 
         public MotoristaService()
         {
             _motoristaRepository = new();
+            _veiculoRepository = new();
+        }
 
+        public MotoristaResponseList Listar()
+        {
+            var response = new MotoristaResponseList();
+            var motoristas = _motoristaRepository.Listar();
+
+            if (!motoristas.Any())
+            {
+                response.AddNotification(new Validations.Notification("Nenhum motorista encontrado"));
+                return response;
+            }
+
+            var motoristasMapped = motoristas.Select(m => m.ToMotoristaDto()).ToList();
+            response.Motoristas = motoristasMapped;
+
+            return response;
         }
 
         public MotoristaResponse Obter(Guid id)
         {
-            var response= new MotoristaResponse();
+            var response = new MotoristaResponse();
 
             var motorista = _motoristaRepository.Obter(id);
 
@@ -73,8 +93,6 @@ namespace MeLevaAi.Api.Services
                 return response;
             }
 
-            //_motoristaRepository
-
             var motoristaMapped = request.ToMotorista();
 
             var motoristaCriado = _motoristaRepository.Cadastrar(motoristaMapped);
@@ -85,19 +103,49 @@ namespace MeLevaAi.Api.Services
             return response;
         }
 
+        public MotoristaResponse Alterar(Guid id, MotoristaRequest request)
+        {
+            var response = new MotoristaResponse();
+
+            var motoristaAtual = _motoristaRepository.Obter(id);
+
+            if (motoristaAtual is null)
+            {
+                response.AddNotification(new Validations.Notification("Motorista não foi encontrado."));
+                return response;
+            }
+
+            var motoristaNovo = request.ToMotorista();
+
+            motoristaNovo.Alterar(motoristaAtual);
+
+            response.Motorista = motoristaNovo.ToMotoristaDto();
+
+            return response;
+        }
+
         public MotoristaResponse Deletar(Guid id)
         {
             var response = new MotoristaResponse();
 
             var motorista = _motoristaRepository.Obter(id);
 
-            // if (motorista != null)
-            // {
-            //     response.AddNotification(new Validations.Notification("Motorista vinculado ao veículo."));
-            //return response;
-            //}
+            if (motorista == null)
+            {
+                response.AddNotification(new Validations.Notification("Motorista não encontrado."));
+                return response;
+            }
 
-            _motoristaRepository.Deletar(id);
+
+            var veiculo = _veiculoRepository.ObterPorProprietarioId(motorista.Id);
+
+            if (veiculo != null)
+            {
+                response.AddNotification(new Validations.Notification("Motorista vinculado á algum veículo."));
+                return response;
+            }
+ 
+            _motoristaRepository.Deletar(id); 
 
 
             return response;

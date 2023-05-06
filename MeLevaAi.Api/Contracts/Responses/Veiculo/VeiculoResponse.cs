@@ -7,4 +7,9 @@ namespace MeLevaAi.Api.Contracts.Responses.Veiculo
     {
         public VeiculoDto Veiculo { get; set; }
     }
+
+    public class VeiculoResponseList : Notifiable
+    {
+        public List<VeiculoDto>? Veiculos { get; set; }
+    }
 }
