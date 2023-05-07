@@ -1,5 +1,4 @@
-﻿using MeLevaAi.Api.Contracts.Requests.Motorista;
-using MeLevaAi.Api.Contracts.Requests.Veiculo;
+﻿using MeLevaAi.Api.Contracts.Requests.Veiculo;
 using MeLevaAi.Api.Contracts.Responses.Veiculo;
 using MeLevaAi.Api.Domain;
 using MeLevaAi.Api.Mappers;
