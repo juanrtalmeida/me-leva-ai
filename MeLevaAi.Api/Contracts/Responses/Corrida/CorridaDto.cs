@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MeLevaAi.Api.Contracts.Responses.Veiculo
 {
-    public class CorridaDto 
-    {
-        public Guid Id { get; set; }
+  public class CorridaDto
+  {
+    public Guid Id { get; set; }
 
-        public Guid PassageiroId { get; set; }
+    public Guid PassageiroId { get; set; }
 
-        public VeiculoDto Veiculo { get; set; }
+    public VeiculoDto Veiculo { get; set; }
 
-        public string TempoEstimado { get; set; }
-    }
+    public string TempoEstimado { get; set; }
+  }
 }

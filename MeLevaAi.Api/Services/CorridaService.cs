@@ -37,16 +37,46 @@ namespace MeLevaAi.Api.Services
       var veiculoSorteado = SortearVeiculoAleatorio(veiculosLivres);
 
       corridaMapped.VeiculoId = veiculoSorteado.Id;
-      corridaMapped.StatusCorrida = StatusCorrida.INICIADA;
+      corridaMapped.StatusCorrida = StatusCorrida.AGUARDANDO;
 
       var corridaCriado = _corridaRepository.Cadastrar(corridaMapped);
 
       var tempoEstimado = CalcularTempoEstimado();
-      corridaCriado.TempoEstimado = tempoEstimado.Minutes.ToString() + " min para a chegada";
+      corridaCriado.TempoEstimado = tempoEstimado;
 
       corridaCriado.Veiculo = _veiculoRepository.Obter(corridaCriado.VeiculoId);
       response.Corrida = corridaCriado.ToCorridaDto();
 
+      return response;
+    }
+
+    public AlterarCorridaResponse AlterarCorrida(Guid guid)
+    {
+      var response = new AlterarCorridaResponse();
+      var corrida = _corridaRepository.Obter(guid);
+
+      if (corrida == null)
+      {
+        response.AddNotification(new Validations.Notification("Corrida não existe."));
+        return response;
+      }
+
+      if (corrida.StatusCorrida == StatusCorrida.INICIADA)
+      {
+        corrida.FinalizarCorrida();
+        _corridaRepository.Alterar(corrida);
+        return response;
+      }
+
+      if (corrida.StatusCorrida == StatusCorrida.ENCERRADA)
+      {
+        response.AddNotification(new Validations.Notification("Corrida já encerrada."));
+        return response;
+      }
+
+      var valorEstimado = CalcularValorEstimadoPreciso(corrida);
+      var tempoEstimado = CalcularTempoEstimadoPreciso(corrida);
+      corrida.IniciarCorrida(valorEstimado, tempoEstimado);
       return response;
     }
 
@@ -62,6 +92,23 @@ namespace MeLevaAi.Api.Services
       var random = new Random();
       var minutos = random.Next(5, 11);
       return TimeSpan.FromMinutes(minutos);
+    }
+
+    private TimeSpan CalcularTempoEstimadoPreciso(Corrida corrida)
+    {
+      var deltaX = Math.Pow(corrida.CordenadaInicialX - corrida.CordenadaFinalX, 2);
+      var deltaY = Math.Pow(corrida.CordenadaInicialY - corrida.CordenadaFinalY, 2);
+      var distanciaEntreDoisPontos = Math.Sqrt(deltaX + deltaY);
+      var velocidade = 30;
+      var tempoEstimado = distanciaEntreDoisPontos / velocidade;
+      return TimeSpan.FromMinutes(tempoEstimado);
+    }
+
+    private double CalcularValorEstimadoPreciso(Corrida corrida)
+    {
+      var tempoEstimado = CalcularTempoEstimadoPreciso(corrida);
+      var valorEstimado = tempoEstimado.TotalSeconds * 0.2;
+      return valorEstimado;
     }
   }
 }
