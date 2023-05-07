@@ -9,12 +9,12 @@ namespace MeLevaAi.Api.Controllers
 {
   [ApiController]
   [Route("[controller]")]
-  public class PassengerController : ControllerBase
+  public class PassageiroController : ControllerBase
   {
 
     private readonly PassengerService _passengerService;
 
-    public PassengerController()
+    public PassageiroController()
     {
       _passengerService = new PassengerService();
     }
@@ -31,7 +31,7 @@ namespace MeLevaAi.Api.Controllers
       return Created("Created", newPassenger);
     }
 
-    [HttpPut("{guid}")]
+    [HttpPut("/adicionar-credito")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
