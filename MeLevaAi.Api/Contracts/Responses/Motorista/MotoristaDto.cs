@@ -3,18 +3,18 @@ using MeLevaAi.Api.Contracts.Responses.CarteiraHabilitacao;
 
 namespace MeLevaAi.Api.Contracts.Responses.Motorista
 {
-    public class MotoristaDto
-    {
-        public Guid Id { get; set; }
+  public class MotoristaDto
+  {
+    public Guid Id { get; set; }
 
-        public string Nome { get; set; }
+    public string Nome { get; set; }
 
-        public string Email { get; set; }
+    public string Email { get; set; }
 
-        public DateTime DataNascimento { get; set; }
+    public DateOnly DataNascimento { get; set; }
 
-        public string Cpf { get; set; }
+    public string Cpf { get; set; }
 
-        public CarteiraHabilitacaoDto CarteiraHabilitacao { get; set; }
-    }
+    public CarteiraHabilitacaoDto CarteiraHabilitacao { get; set; }
+  }
 }
