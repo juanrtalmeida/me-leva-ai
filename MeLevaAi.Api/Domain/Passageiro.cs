@@ -19,6 +19,13 @@ namespace MeLevaAi.Api.Domain
 
     public string CPF { get; private set; }
 
-    public string Saldo { get; private set; }
+    public double Saldo { get; private set; }
+
+    public Passageiro AlterarSaldo(double novoSaldo)
+    {
+      Saldo = novoSaldo;
+
+      return this;
+    }
   }
 }

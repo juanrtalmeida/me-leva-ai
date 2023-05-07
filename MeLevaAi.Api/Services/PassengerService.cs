@@ -63,6 +63,10 @@ namespace MeLevaAi.Api.Services
         return n;
       }
 
+      var passageiro = _passengerRepository.ObterPeloId(request.id);
+      passageiro.AlterarSaldo(request.valor);
+      _passengerRepository.Update(passageiro);
+
       return n;
 
     }
