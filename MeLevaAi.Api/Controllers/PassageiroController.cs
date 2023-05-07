@@ -32,7 +32,10 @@ namespace MeLevaAi.Api.Controllers
     }
 
     [HttpPut("{guid}")]
-    public ActionResult<Passageiro> AddCredit([FromBody] AdicionarCreditoRequest request)
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
+    public ActionResult AddCredit([FromBody] AdicionarCreditoRequest request)
     {
       var passenger = _passengerService.AddCredit(request);
       if (passenger.Notifications.Any(n => n.Message == "Passageiro não encontrado"))
@@ -45,7 +48,7 @@ namespace MeLevaAi.Api.Controllers
         return BadRequest(new ErrorResponse(new Notification("Valor invalido, deve ser um valor maior que 0")));
       }
 
-      return Ok(passenger);
+      return Accepted(passenger);
     }
   }
 }
