@@ -57,7 +57,7 @@ namespace MeLevaAi.Api.Services
 
       if (request.DataNascimento.CompareTo(DateOnly.FromDateTime(DateTime.Now.AddYears(-18))) > 0)
       {
-        response.AddNotification(new Validations.Notification("O passageiro deve ter pelo menos 18 anos de idade."));
+        response.AddNotification(new Validations.Notification("O Motorista deve ter pelo menos 18 anos de idade."));
         return response;
       }
 

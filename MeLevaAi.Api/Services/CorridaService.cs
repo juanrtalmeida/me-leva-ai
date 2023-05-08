@@ -10,13 +10,16 @@ namespace MeLevaAi.Api.Services
   {
     public readonly CorridaRepository _corridaRepository;
     public readonly VeiculoRepository _veiculoRepository;
+    public readonly PassageiroRepository _passageiroRepository;
     public readonly VeiculoService _veiculoService;
+    public readonly MotoristaRepository _motoristaRepository;
 
     public CorridaService()
     {
       _corridaRepository = new();
       _veiculoRepository = new();
       _veiculoService = new();
+      _passageiroRepository = new();
     }
 
     public CorridaResponse Cadastrar(CorridaRequest request)
@@ -61,18 +64,32 @@ namespace MeLevaAi.Api.Services
         return response;
       }
 
-      if (corrida.StatusCorrida == StatusCorrida.INICIADA)
-      {
-        corrida.FinalizarCorrida();
-        _corridaRepository.Alterar(corrida);
-        return response;
-      }
 
       if (corrida.StatusCorrida == StatusCorrida.ENCERRADA)
       {
         response.AddNotification(new Validations.Notification("Corrida já encerrada."));
         return response;
       }
+
+      if (corrida.StatusCorrida == StatusCorrida.INICIADA)
+      {
+        corrida.FinalizarCorrida();
+        var passageiro = _passageiroRepository.ObterPeloId(corrida.PassageiroId);
+        var motorista = _motoristaRepository.Obter(corrida.MotoristaId);
+        if (passageiro.Saldo < corrida.Valor)
+        {
+          response.AddNotification(new Validations.Notification("Saldo insuficiente."));
+          return response;
+        }
+
+        passageiro.AlterarSaldo(passageiro.Saldo - corrida.Valor);
+        motorista.AlterarSaldo(motorista.Saldo + corrida.Valor);
+        _motoristaRepository.Update(motorista);
+        _passageiroRepository.Update(passageiro);
+        _corridaRepository.Alterar(corrida);
+        return response;
+      }
+
 
       var valorEstimado = CalcularValorEstimadoPreciso(corrida);
       var tempoEstimado = CalcularTempoEstimadoPreciso(corrida);
