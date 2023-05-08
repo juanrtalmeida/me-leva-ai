@@ -23,15 +23,17 @@ namespace MeLevaAi.Api.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
     public ActionResult<Passageiro> Create([FromBody] CriarPassageiroRequest request)
     {
-      var newPassenger = _passengerService.Create(request);
-      if (!newPassenger.IsValid())
-      {
-        return NotFound(new ErrorResponse(new Notification("Passenger not found")));
-      }
-      return Created("Created", newPassenger);
+
+
+      var response = _passengerService.Create(request);
+
+      if (!response.IsValid())
+        return NotFound(new ErrorResponse(response.Notifications));
+
+      return Ok(response);
     }
 
-    [HttpPut("/adicionar-credito")]
+    [HttpPut("adicionar-credito")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]

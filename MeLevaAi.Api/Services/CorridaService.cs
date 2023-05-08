@@ -26,6 +26,13 @@ namespace MeLevaAi.Api.Services
     {
       var response = new CorridaResponse();
       var corridaMapped = request.ToCorrida();
+      var passageiro = _passageiroRepository.ObterPeloId(request.PassageiroId);
+
+      if (passageiro == null)
+      {
+        response.AddNotification(new Validations.Notification("Esse passageiro não existe."));
+        return response;
+      }
 
       var veiculosLivres = _veiculoRepository.Listar()
           .Where(v => !_corridaRepository.Listar().Any(c => c.VeiculoId == v.Id && c.StatusCorrida == StatusCorrida.INICIADA))
