@@ -16,7 +16,7 @@ namespace MeLevaAi.Api.Services
     public PassageiroResponse Create(CriarPassageiroRequest request)
     {
       var error = new PassageiroResponse();
-      if (DateOnly.ParseExact(request.BirthDate, "dd/MM/yyyy").CompareTo(DateOnly.FromDateTime(DateTime.Now.AddYears(-16))) > 0)
+      if (request.BirthDate.CompareTo(DateOnly.FromDateTime(DateTime.Now.AddYears(-16))) > 0)
       {
         error.AddNotification(new Notification("Passageiro deve ter ao menos 16 anos"));
         return error;

@@ -11,7 +11,7 @@ namespace MeLevaAi.Api.Contracts.Requests.Passageiro
     public string Email { get; set; }
 
     [Required]
-    public string BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
 
     [Required]
     public string CPF { get; set; }
