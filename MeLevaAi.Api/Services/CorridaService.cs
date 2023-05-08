@@ -20,6 +20,7 @@ namespace MeLevaAi.Api.Services
       _veiculoRepository = new();
       _veiculoService = new();
       _passageiroRepository = new();
+      _motoristaRepository = new();
     }
 
     public CorridaResponse Cadastrar(CorridaRequest request)
@@ -48,6 +49,7 @@ namespace MeLevaAi.Api.Services
 
       corridaMapped.VeiculoId = veiculoSorteado.Id;
       corridaMapped.StatusCorrida = StatusCorrida.AGUARDANDO;
+      corridaMapped.MotoristaId = veiculoSorteado.ProprietarioId;
 
       var corridaCriado = _corridaRepository.Cadastrar(corridaMapped);
 
