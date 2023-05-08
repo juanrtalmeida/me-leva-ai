@@ -11,8 +11,34 @@ namespace MeLevaAi.Api.Controllers
     [Route("[controller]")]
     public class PassageiroController : ControllerBase
     {
+      _passengerService = new PassengerService();
+    }
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Passageiro))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    public ActionResult<Passageiro> Create([FromBody] CriarPassageiroRequest request)
+    {
 
-        private readonly PassengerService _passengerService;
+
+      var response = _passengerService.Create(request);
+
+      if (!response.IsValid())
+        return NotFound(new ErrorResponse(response.Notifications));
+
+      return Ok(response);
+    }
+
+    [HttpPut("adicionar-credito")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
+    public ActionResult AddCredit([FromBody] AdicionarCreditoRequest request)
+    {
+      var passenger = _passengerService.AddCredit(request);
+      if (passenger.Notifications.Any(n => n.Message == "Passageiro não encontrado"))
+      {
+        return NotFound(new ErrorResponse(new Notification("Passageiro não encontrado")));
+      }
 
         public PassageiroController()
         {
