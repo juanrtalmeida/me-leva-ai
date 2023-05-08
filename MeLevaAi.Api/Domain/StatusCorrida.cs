@@ -1,8 +1,9 @@
 ﻿namespace MeLevaAi.Api.Domain
 {
-    public enum StatusCorrida
-    {
-        INICIADA = 1,
-        ENCERRADA
-    }
+  public enum StatusCorrida
+  {
+    AGUARDANDO,
+    INICIADA = 1,
+    ENCERRADA
+  }
 }

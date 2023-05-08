@@ -9,22 +9,22 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MeLevaAi.Api.Mappers
 {
-    public static class CorridaMapper
+  public static class CorridaMapper
+  {
+    public static Corrida ToCorrida(this CorridaRequest request)
+       => new(request.PassageiroId, request.CordenadaInicialX, request.CordenadaInicialY, request.CordenadaFinalX, request.CordenadaFinalY);
+
+    public static CorridaDto
+        ToCorridaDto(this Corrida corrida)
     {
-        public static Corrida ToCorrida(this CorridaRequest request)
-           => new(request.PassageiroId, request.CordenadaInicialX, request.CordenadaInicialY, request.CordenadaFinalX, request.CordenadaFinalY);
 
-        public static CorridaDto
-            ToCorridaDto(this Corrida corrida)
-        {
-
-            return new CorridaDto
-            {
-                Id = corrida.Id,
-                PassageiroId = corrida.PassageiroId,
-                Veiculo = corrida.Veiculo.ToVeiculoDto(),
-                TempoEstimado = corrida.TempoEstimado
-            };
-        }
+      return new CorridaDto
+      {
+        Id = corrida.Id,
+        PassageiroId = corrida.PassageiroId,
+        Veiculo = corrida.Veiculo.ToVeiculoDto(),
+        TempoEstimado = corrida.TempoEstimado.TotalMinutes.ToString() + " minutos",
+      };
     }
+  }
 }
