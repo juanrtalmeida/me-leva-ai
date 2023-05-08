@@ -39,7 +39,6 @@ namespace MeLevaAi.Api.Services
         return response;
       }
 
-
       if (avaliacao != null)
       {
         response.AddNotification(new Validations.Notification("Usuario já avaliado"));
@@ -60,6 +59,7 @@ namespace MeLevaAi.Api.Services
         response.AddNotification(new Validations.Notification("Não foi encontrado esse usuario"));
         return response;
       }
+
       return response;
     }
   }
