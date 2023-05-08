@@ -142,5 +142,36 @@ namespace MeLevaAi.Api.Services
       return response;
     }
 
+    public Notifiable RetirarCredito(RetirarCreditoRequest request)
+    {
+      var response = new Notifiable();
+
+      var motorista = _motoristaRepository.Obter(request.id);
+
+      if (motorista == null)
+      {
+        response.AddNotification(new Validations.Notification("Motorista não encontrado."));
+        return response;
+      }
+
+      if (request.valor <= 0)
+      {
+        response.AddNotification(new Validations.Notification("Valor deve ser maior que zero."));
+        return response;
+      }
+
+      if (request.valor > motorista.Saldo)
+      {
+        response.AddNotification(new Validations.Notification("Saldo insuficiente."));
+        return response;
+      }
+
+      motorista.AlterarSaldo(motorista.Saldo - request.valor);
+
+      _motoristaRepository.Update(motorista);
+
+      return response;
+    }
+
   }
 }

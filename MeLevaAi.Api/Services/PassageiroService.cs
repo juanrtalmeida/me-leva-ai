@@ -59,7 +59,7 @@ namespace MeLevaAi.Api.Services
 
       if (request.valor <= 0)
       {
-        n.AddNotification(new Notification("Valor invalido"));
+        n.AddNotification(new Notification("Valor invalido."));
         return n;
       }
 
