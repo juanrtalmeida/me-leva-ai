@@ -8,7 +8,7 @@
       this.Email = email;
       this.DataNascimento = dataNascimento;
       this.Cpf = cpf;
-      // this.CarteiraHabilitacao = carteiraHabilitacao;
+      this.CarteiraHabilitacao = carteiraHabilitacao;
     }
 
     public Guid Id { get; init; } = Guid.NewGuid();
