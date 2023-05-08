@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Kabuto\\OneDrive\\Área de Trabalho\\me-leva-ai\\MeLevaAi.Api\\MeLevaAi.Api.csproj": {}
+    "C:\\Users\\Christian Mendel\\Desktop\\me-leva-ai\\MeLevaAi.Api\\MeLevaAi.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Kabuto\\OneDrive\\Área de Trabalho\\me-leva-ai\\MeLevaAi.Api\\MeLevaAi.Api.csproj": {
+    "C:\\Users\\Christian Mendel\\Desktop\\me-leva-ai\\MeLevaAi.Api\\MeLevaAi.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kabuto\\OneDrive\\Área de Trabalho\\me-leva-ai\\MeLevaAi.Api\\MeLevaAi.Api.csproj",
+        "projectUniqueName": "C:\\Users\\Christian Mendel\\Desktop\\me-leva-ai\\MeLevaAi.Api\\MeLevaAi.Api.csproj",
         "projectName": "MeLevaAi.Api",
-        "projectPath": "C:\\Users\\Kabuto\\OneDrive\\Área de Trabalho\\me-leva-ai\\MeLevaAi.Api\\MeLevaAi.Api.csproj",
-        "packagesPath": "C:\\Users\\Kabuto\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Kabuto\\OneDrive\\Área de Trabalho\\me-leva-ai\\MeLevaAi.Api\\obj\\",
+        "projectPath": "C:\\Users\\Christian Mendel\\Desktop\\me-leva-ai\\MeLevaAi.Api\\MeLevaAi.Api.csproj",
+        "packagesPath": "C:\\Users\\Christian Mendel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Christian Mendel\\Desktop\\me-leva-ai\\MeLevaAi.Api\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Kabuto\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Christian Mendel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -42,7 +47,7 @@
           "dependencies": {
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.2.3, )"
+              "version": "[6.5.0, )"
             }
           },
           "imports": [
