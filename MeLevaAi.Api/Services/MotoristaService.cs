@@ -57,7 +57,7 @@ namespace MeLevaAi.Api.Services
 
       if (request.DataNascimento.CompareTo(DateOnly.FromDateTime(DateTime.Now.AddYears(-18))) > 0)
       {
-        response.AddNotification(new Validations.Notification("O passageiro deve ter pelo menos 18 anos de idade."));
+        response.AddNotification(new Validations.Notification("O Motorista deve ter pelo menos 18 anos de idade."));
         return response;
       }
 
@@ -138,6 +138,37 @@ namespace MeLevaAi.Api.Services
       }
 
       _motoristaRepository.Deletar(id);
+
+      return response;
+    }
+
+    public Notifiable RetirarCredito(RetirarCreditoRequest request)
+    {
+      var response = new Notifiable();
+
+      var motorista = _motoristaRepository.Obter(request.id);
+
+      if (motorista == null)
+      {
+        response.AddNotification(new Validations.Notification("Motorista não encontrado."));
+        return response;
+      }
+
+      if (request.valor <= 0)
+      {
+        response.AddNotification(new Validations.Notification("Valor deve ser maior que zero."));
+        return response;
+      }
+
+      if (request.valor > motorista.Saldo)
+      {
+        response.AddNotification(new Validations.Notification("Saldo insuficiente."));
+        return response;
+      }
+
+      motorista.AlterarSaldo(motorista.Saldo - request.valor);
+
+      _motoristaRepository.Update(motorista);
 
       return response;
     }

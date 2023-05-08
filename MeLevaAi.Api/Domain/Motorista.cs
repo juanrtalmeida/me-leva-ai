@@ -8,7 +8,7 @@
       this.Email = email;
       this.DataNascimento = dataNascimento;
       this.Cpf = cpf;
-      // this.CarteiraHabilitacao = carteiraHabilitacao;
+      this.CarteiraHabilitacao = carteiraHabilitacao;
     }
 
     public Guid Id { get; init; } = Guid.NewGuid();
@@ -18,6 +18,8 @@
     public string Cpf { get; private set; }
     public CarteiraHabilitacao CarteiraHabilitacao { get; private set; }
 
+    public double Saldo { get; private set; }
+
     public Motorista Alterar(Motorista motorista)
     {
       Nome = motorista.Nome;
@@ -26,6 +28,13 @@
       Cpf = motorista.Cpf;
       DataNascimento = motorista.DataNascimento;
       CarteiraHabilitacao = motorista.CarteiraHabilitacao;
+
+      return this;
+    }
+
+    public Motorista AlterarSaldo(double novoSaldo)
+    {
+      Saldo = novoSaldo;
 
       return this;
     }
