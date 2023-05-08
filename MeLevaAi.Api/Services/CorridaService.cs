@@ -82,7 +82,6 @@ namespace MeLevaAi.Api.Services
 
       if (corrida.StatusCorrida == StatusCorrida.INICIADA)
       {
-        corrida.FinalizarCorrida();
         var passageiro = _passageiroRepository.ObterPeloId(corrida.PassageiroId);
         var motorista = _motoristaRepository.Obter(corrida.MotoristaId);
         if (passageiro.Saldo < corrida.Valor)
@@ -91,6 +90,7 @@ namespace MeLevaAi.Api.Services
           return response;
         }
 
+        corrida.FinalizarCorrida();
         passageiro.AlterarSaldo(passageiro.Saldo - corrida.Valor);
         motorista.AlterarSaldo(motorista.Saldo + corrida.Valor);
         _motoristaRepository.Update(motorista);
