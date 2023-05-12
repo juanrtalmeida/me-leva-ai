@@ -20,6 +20,7 @@ namespace MeLevaAi.Api.Services
             _veiculoRepository = new();
             _veiculoService = new();
             _passageiroRepository = new();
+            _motoristaRepository = new();
         }
 
         public CorridaResponse Cadastrar(CorridaRequest request)
@@ -35,7 +36,7 @@ namespace MeLevaAi.Api.Services
             }
 
             var veiculosLivres = _veiculoRepository.Listar()
-                .Where(v => !_corridaRepository.Listar().Any(c => c.VeiculoId == v.Id && c.StatusCorrida == StatusCorrida.INICIADA))
+                .Where(v => !_corridaRepository.Listar().Any(c => c.VeiculoId == v.Id && c.StatusCorrida == StatusCorrida.AGUARDANDO))
                 .ToList();
 
             if (!veiculosLivres.Any())
@@ -46,15 +47,17 @@ namespace MeLevaAi.Api.Services
 
             var veiculoSorteado = SortearVeiculoAleatorio(veiculosLivres);
 
-            corridaMapped.VeiculoId = veiculoSorteado.Id;
-            corridaMapped.StatusCorrida = StatusCorrida.AGUARDANDO;
+            corridaMapped.CriandoCorrida(veiculoSorteado.Id, veiculoSorteado.ProprietarioId);
 
             var corridaCriado = _corridaRepository.Cadastrar(corridaMapped);
 
             var tempoEstimado = CalcularTempoEstimado();
-            corridaCriado.TempoEstimado = tempoEstimado;
 
-            corridaCriado.Veiculo = _veiculoRepository.Obter(corridaCriado.VeiculoId);
+            corridaCriado.TempoEstimadoCorrida(tempoEstimado);
+
+            var veiculoCorrida= _veiculoRepository.Obter(corridaCriado.VeiculoId);
+            corridaCriado.VeiculoDaCorrida(veiculoCorrida);
+
             response.Corrida = corridaCriado.ToCorridaDto();
 
             return response;
@@ -80,7 +83,6 @@ namespace MeLevaAi.Api.Services
 
             if (corrida.StatusCorrida == StatusCorrida.INICIADA)
             {
-                corrida.FinalizarCorrida();
                 var passageiro = _passageiroRepository.ObterPeloId(corrida.PassageiroId);
                 var motorista = _motoristaRepository.Obter(corrida.MotoristaId);
                 if (passageiro.Saldo < corrida.Valor)
@@ -89,6 +91,7 @@ namespace MeLevaAi.Api.Services
                     return response;
                 }
 
+                corrida.FinalizarCorrida();
                 passageiro.AlterarSaldo(passageiro.Saldo - corrida.Valor);
                 motorista.AlterarSaldo(motorista.Saldo + corrida.Valor);
                 _motoristaRepository.Update(motorista);
